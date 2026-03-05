@@ -3,6 +3,7 @@ package com.yoga.medledger.service;
 import com.yoga.medledger.dto.RegisterRequest;
 import com.yoga.medledger.entity.Role;
 import com.yoga.medledger.entity.User;
+import com.yoga.medledger.exception.EmailAlreadyExistsException;
 import com.yoga.medledger.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +19,7 @@ public class UserService {
     public void register(RegisterRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already registered");
         }
 
         User user = User.builder()

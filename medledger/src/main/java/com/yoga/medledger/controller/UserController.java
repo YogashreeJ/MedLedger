@@ -1,5 +1,6 @@
 package com.yoga.medledger.controller;
 
+import com.yoga.medledger.dto.ApiResponse;
 import com.yoga.medledger.dto.RegisterRequest;
 import com.yoga.medledger.service.UserService;
 import jakarta.validation.Valid;
@@ -14,8 +15,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public String register(@Valid @RequestBody RegisterRequest request) {
+    public ApiResponse register(@Valid @RequestBody RegisterRequest request) {
         userService.register(request);
-        return "User registered successfully";
+        return new ApiResponse(true, "User registered successfully");
     }
 }
