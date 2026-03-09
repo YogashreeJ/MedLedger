@@ -21,13 +21,31 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public Claims extractAllClaims(String token) {
 
         Claims claims = Jwts.parser()
                 .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
 
+        return claims;
+    }
+
+    public String extractEmail(String token) {
+
+        Claims claims = extractAllClaims(token);
         return claims.getSubject();
     }
+
+    public boolean validateToken(String token, String email) {
+        String extractedEmail = extractEmail(token);
+        return extractedEmail.equals(email) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+
+
 }
