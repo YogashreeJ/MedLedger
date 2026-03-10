@@ -3,9 +3,11 @@ package com.yoga.medledger.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class JwtUtil {
 
     private final String SECRET_KEY = "medledger-secret-key-medledger-secret-key";

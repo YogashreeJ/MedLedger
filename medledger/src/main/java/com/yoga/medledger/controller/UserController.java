@@ -5,6 +5,7 @@ import com.yoga.medledger.dto.RegisterRequest;
 import com.yoga.medledger.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,5 +19,10 @@ public class UserController {
     public ApiResponse register(@Valid @RequestBody RegisterRequest request) {
         userService.register(request);
         return new ApiResponse(true, "User registered successfully");
+    }
+
+    @GetMapping("/me")
+    public String me(Authentication authentication) {
+        return authentication.getName();
     }
 }
