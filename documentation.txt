@@ -1,0 +1,58 @@
+02/03
+    Create Project from Spring Initializr
+    Clean Package Structure
+        config
+        controller
+        service
+        repository
+        entity
+        dto
+        security
+        exception
+        util
+    application.yml Setup
+
+03/03
+    Create role entity using enum
+    Design the User Entity 
+
+04/03
+    Create DTO Layer
+    Password Encoding Configuration
+    Create Service Layer
+    Create Controller
+    IMPORTANT: Disable Default Security (Temporarily)
+    Test in Postman
+
+05/03
+    Create API Response Class
+    Update Controller
+    Create Custom Exception
+    Use It in Service
+    Create Global Exception Handler
+    Test Again in Postman
+
+06/03
+    Make Spring Security load users from your database.
+    Use UserDetails and UserDetailsService 
+    
+07/03
+    Login API → Generate JWT → Return token
+    Add JWT Dependency in pom.xml
+    Create JWT Utility Class
+    Create Login Request DTO
+    Create Login Response DTO
+    Create Auth Controller
+    Test API
+
+09/03
+    JWT Authentication Filter
+    Update JwtUtil and add extract email method and validate token method
+    Create JwtAuthenticationFilter class
+    Register the Filter in SecurityConfig
+    Test
+
+10/03
+    Enable Role based access(Method-Level Security)
+    Add @EnableMethodSecurity to security config
+    
