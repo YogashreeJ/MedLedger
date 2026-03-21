@@ -18,7 +18,7 @@ public class MedicalRecordService {
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
-    private MedicalRecord fetchLatestVersion(User patient){
+    private MedicalRecord fetchLatestVersion(User patient) {
 
         Optional<MedicalRecord> latestRecord =
                 medicalRecordRepository.findTopByPatientOrderByVersionDesc(patient);
@@ -26,9 +26,9 @@ public class MedicalRecordService {
         return latestRecord.orElse(null);
     }
 
-    private int nextVersion(MedicalRecord latestRecord){
+    private int nextVersion(MedicalRecord latestRecord) {
 
-        if(latestRecord == null){
+        if (latestRecord == null) {
             return 1;
         }
 
@@ -56,7 +56,7 @@ public class MedicalRecordService {
 
             for (byte b : hashBytes) {
                 String hex = Integer.toHexString(0xff & b);
-                if(hex.length() == 1) hexString.append('0');
+                if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
 
@@ -65,5 +65,44 @@ public class MedicalRecordService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error generating hash", e);
         }
+    }
+    public MedicalRecord createMedicalRecord(
+            User doctor,
+            User patient,
+            String diagnosis,
+            String treatment,
+            String notes
+    ) {
+
+        // 1️⃣ Get latest record for this patient
+        MedicalRecord latestRecord = fetchLatestVersion(patient);
+
+        // 2️⃣ Determine next version
+        int version = nextVersion(latestRecord);
+
+        // 3️⃣ Determine previous hash
+        String previousHash = latestRecord == null
+                ? "GENESIS"
+                : latestRecord.getCurrentHash();
+
+        // 4️⃣ Create new record
+        MedicalRecord record = new MedicalRecord();
+
+        record.setDoctor(doctor);
+        record.setPatient(patient);
+        record.setDiagnosis(diagnosis);
+        record.setTreatment(treatment);
+        record.setNotes(notes);
+        record.setVersion(version);
+        record.setPreviousHash(previousHash);
+
+        // timestamp already auto-set
+        record.setTimestamp(java.time.LocalDateTime.now());
+        // 5️⃣ Generate hash
+        String currentHash = generateHash(record);
+        record.setCurrentHash(currentHash);
+
+        // 6️⃣ Save to DB
+        return medicalRecordRepository.save(record);
     }
 }

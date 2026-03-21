@@ -31,7 +31,8 @@ public class User {
     private Role role;
 
     @Version
-    private Long version;
+    @Column(nullable = false)
+    private Long version = 0L;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
